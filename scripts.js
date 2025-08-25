@@ -22,27 +22,31 @@ function getComputerChoice() {
 //         }
 // }
 
+const rockButton = document.querySelector(".rockButton");
+const paperButton = document.querySelector(".paperButton");
+const scissorsButton = document.querySelector(".scissorsButton");
+
 let humanScore = 0;
 let computerScore = 0;
+let roundCounter = 0;
+let maxRound = 5;
 
 function playRound(humanChoice, computerChoice) {
     if (computerChoice === humanChoice) {
         console.log(`Your Score: ${humanScore}`);
         console.log(`Computer Score:${computerScore}`);
         humanTally.textContent = `Your Score: ${humanScore}`;
-        computerTally.textContent = `Your Score: ${computerScore}`;
+        computerTally.textContent = `Computer Score: ${computerScore}`;
         console.log(`It's a draw! You both picked ${humanChoice}!`);
     }
-    else if (
-        (computerChoice === `Rock` && humanChoice === `Scissors`) ||
+    else if ((computerChoice === `Rock` && humanChoice === `Scissors`) ||
             (computerChoice === `Paper` && humanChoice === `Rock`) ||
-            (computerChoice === `Scissors` && humanChoice === `Paper`)
-        ) {
+            (computerChoice === `Scissors` && humanChoice === `Paper`)) {
         computerScore++;
         console.log(`Your Score: ${humanScore}`);
         console.log(`Computer Score ${computerScore}`);
         humanTally.textContent = `Your Score: ${humanScore}`;
-        computerTally.textContent = `Your Score: ${computerScore}`;
+        computerTally.textContent = `Computer Score: ${computerScore}`;
         console.log(`You lost! ${computerChoice} beats ${humanChoice}!`);
     }
     else {
@@ -50,38 +54,42 @@ function playRound(humanChoice, computerChoice) {
         console.log(`Your Score: ${humanScore}`);
         console.log(`Computer Score ${computerScore}`);
         humanTally.textContent = `Your Score: ${humanScore}`;
-        computerTally.textContent = `Your Score: ${computerScore}`;
+        computerTally.textContent = `Computer Score: ${computerScore}`;
         console.log(`You won! ${humanChoice} beats ${computerChoice}!`);
     }
 }
 
-function playGame() {
-    for ( let i = 0; i >= 5; i++) {
-        rockButton.addEventListener("click", () => {
-            let humanChoice = "Rock";
-            playRound(humanChoice, getComputerChoice())
-        });
-
-        paperButton.addEventListener("click", () => {
-            let humanChoice = "Paper";
-            playRound(humanChoice, getComputerChoice())
-        });
-
-        scissorsButton.addEventListener("click", () => {
-            let humanChoice = "Scissors";
-            playRound(humanChoice, getComputerChoice())
-        });
+function scoreManager() {
+    if (humanScore === 5) {
+        body.appendChild(declareWinner);
+        declareWinner.textContent = "You Win!";
+    } 
+    else if (computerScore === 5) {
+        body.appendChild(declareWinner);
+        declareWinner.textContent = "You Lose!";
     }
-    if (i <= 5) {
-        if (humanScore > computerScore) {
-            // declare winner
-        }
-    }
-};
+}
 
-const rockButton = document.querySelector(".rockButton");
-const paperButton = document.querySelector(".paperButton");
-const scissorsButton = document.querySelector(".scissorsButton");
+rockButton.addEventListener("click", () => {
+    let humanChoice = "Rock";
+    playRound(humanChoice, getComputerChoice());
+    roundCounter++;
+    scoreManager();
+});
+
+paperButton.addEventListener("click", () => {
+    let humanChoice = "Paper";
+    playRound(humanChoice, getComputerChoice());
+    roundCounter++
+    scoreManager();;
+});
+
+scissorsButton.addEventListener("click", () => {
+    let humanChoice = "Scissors";
+    playRound(humanChoice, getComputerChoice());
+    roundCounter++
+    gameManager();;
+});
   
 const div = document.createElement("div");
 const script = document.querySelector("script");
@@ -92,4 +100,5 @@ let humanTally = document.createElement("p");
 div.append(humanTally);
 let computerTally = document.createElement("p");
 div.append(computerTally);
+let declareWinner = document.createElement("p");
 
